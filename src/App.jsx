@@ -1,5 +1,5 @@
 import { useState } from "react"
-import { BrowserRouter, Routes, Route, Link, Navigate } from "react-router-dom"
+import { Routes, Route, Link, Navigate, useMatch } from "react-router-dom"
 import { Home } from "./components/Home"
 import { Notes } from "./components/Notes"
 import { Note } from "./components/Note"
@@ -30,31 +30,35 @@ function App() {
 
   const [user, setUser] = useState(null)
 
+  const match = useMatch('/notes/:id')
+
+  const note = match
+    ? notes.find(note => note.id === Number(match.params.id))
+    : null
+
   const login = user => setUser(user)
 
   const style = { padding: 5 }
 
   return (
     <div>
-      <BrowserRouter>
-        <div>
-          <Link to='/' style={style}>Home</Link>
-          <Link to='/notes' style={style}>Notes</Link>
-          <Link to='/users' style={style}>Users</Link>
-          {user
-            ? <em>{user} logged in</em>
-            : <Link to='/login' style={style}>Login</Link>
-          }
-        </div>
+      <div>
+        <Link to='/' style={style}>Home</Link>
+        <Link to='/notes' style={style}>Notes</Link>
+        <Link to='/users' style={style}>Users</Link>
+        {user
+          ? <em>{user} logged in</em>
+          : <Link to='/login' style={style}>Login</Link>
+        }
+      </div>
 
-        <Routes>
-          <Route path='/' element={<Home />} />
-          <Route path='/notes' element={<Notes notes={notes} />} />
-          <Route path='/notes/:id' element={<Note notes={notes} />} />
-          <Route path='/users' element={user ? <Users /> : <Navigate replace to='/login' />} />
-          <Route path='login' element={<Login onLogin={login} />} />
-        </Routes>
-      </BrowserRouter>
+      <Routes>
+        <Route path='/' element={<Home />} />
+        <Route path='/notes' element={<Notes notes={notes} />} />
+        <Route path='/notes/:id' element={<Note note={note} />} />
+        <Route path='/users' element={user ? <Users /> : <Navigate replace to='/login' />} />
+        <Route path='login' element={<Login onLogin={login} />} />
+      </Routes>
 
       <footer>
         <br />
