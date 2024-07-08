@@ -1,4 +1,4 @@
-import { Button, Form } from "react-bootstrap"
+import { Button, TextField } from "@mui/material"
 import { useNavigate } from "react-router-dom"
 
 export function Login({ onLogin }) {
@@ -13,17 +13,19 @@ export function Login({ onLogin }) {
   return (
     <div>
       <h2>Login</h2>
-      <Form onSubmit={onSubmit}>
-        <Form.Group>
-          <Form.Label>Username</Form.Label>
-          <Form.Control type='text' name='username' />
-        </Form.Group>
-        <Form.Group>
-          <Form.Label>Password</Form.Label>
-          <Form.Control type='password' name='password' />
-        </Form.Group>
-        <Button variant='primary' type='submit'>Log in</Button>
-      </Form>
+      <form onSubmit={onSubmit}>
+        <div>
+          <TextField label='Username' name='username' />
+        </div>
+        <div>
+          <TextField label='Password' type='password' name='password' />
+        </div>
+        <div>
+          <Button variant='contained' color='primary' type='submit'>
+            Log in
+          </Button>
+        </div>
+      </form>
     </div>
   )
 }

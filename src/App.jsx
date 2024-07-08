@@ -5,7 +5,7 @@ import { Notes } from "./components/Notes"
 import { Note } from "./components/Note"
 import { Users } from "./components/Users"
 import { Login } from "./components/Login"
-import { Alert, Nav, Navbar } from "react-bootstrap"
+import { Alert, AppBar, Button, Container, IconButton, Toolbar } from "@mui/material"
 
 function App() {
   const [notes, setNotes] = useState([
@@ -44,35 +44,30 @@ function App() {
     setTimeout(() => setMessage(null), 5000)
   }
 
-  const style = { padding: 5 }
-
   return (
-    <div className='container'>
-      {message && <Alert variant='success'>{message}</Alert>}
+    <Container>
+      {message && <Alert severity='success'>{message}</Alert>}
 
-      <Navbar collapseOnSelect expand="lg">
-        <Navbar.Toggle aria-controls='responsive-navbar-nav' />
-        <Navbar.Collapse id='responsive-navbar-nav'>
-          <Nav className="me-auto">
-            <Nav.Link href="#" as="span">
-              <Link to='/' style={style}>Home</Link>
-            </Nav.Link>
-            <Nav.Link href="#" as="span">
-              <Link to='/notes' style={style}>Notes</Link>
-            </Nav.Link>
-            <Nav.Link href="#" as="span">
-              <Link to='/users' style={style}>Users</Link>
-            </Nav.Link>
-            <Nav.Link href="#" as="span">
-              {user
-                ? <em>{user} logged in</em>
-                : <Link to='/login' style={style}>Login</Link>
-              }
-            </Nav.Link>
-          </Nav>
-        </Navbar.Collapse>
-
-      </Navbar>
+      <AppBar position="static">
+        <Toolbar>
+          <IconButton edge="start" color="inherit" aria-label="menu" />
+          <Button color='inherit' component={Link} to='/'>
+            Home
+          </Button>
+          <Button color='inherit' component={Link} to='/notes'>
+            Notes
+          </Button>
+          <Button color='inherit' component={Link} to='/users'>
+            Users
+          </Button>
+          {user
+            ? <em>{user} logged in</em>
+            : <Button color='inherit' component={Link} to='/login'>
+              Login
+            </Button>
+          }
+        </Toolbar>
+      </AppBar>
 
       <Routes>
         <Route path='/' element={<Home />} />
@@ -86,7 +81,7 @@ function App() {
         <br />
         <em>Note App 2024</em>
       </footer>
-    </div>
+    </Container>
   )
 }
 
