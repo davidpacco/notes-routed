@@ -5,6 +5,7 @@ import { Notes } from "./components/Notes"
 import { Note } from "./components/Note"
 import { Users } from "./components/Users"
 import { Login } from "./components/Login"
+import { Alert, Nav, Navbar } from "react-bootstrap"
 
 function App() {
   const [notes, setNotes] = useState([
@@ -29,6 +30,7 @@ function App() {
   ])
 
   const [user, setUser] = useState(null)
+  const [message, setMessage] = useState(null)
 
   const match = useMatch('/notes/:id')
 
@@ -36,21 +38,41 @@ function App() {
     ? notes.find(note => note.id === Number(match.params.id))
     : null
 
-  const login = user => setUser(user)
+  const login = user => {
+    setUser(user)
+    setMessage(`Welcome ${user}`)
+    setTimeout(() => setMessage(null), 5000)
+  }
 
   const style = { padding: 5 }
 
   return (
-    <div>
-      <div>
-        <Link to='/' style={style}>Home</Link>
-        <Link to='/notes' style={style}>Notes</Link>
-        <Link to='/users' style={style}>Users</Link>
-        {user
-          ? <em>{user} logged in</em>
-          : <Link to='/login' style={style}>Login</Link>
-        }
-      </div>
+    <div className='container'>
+      {message && <Alert variant='success'>{message}</Alert>}
+
+      <Navbar collapseOnSelect expand="lg">
+        <Navbar.Toggle aria-controls='responsive-navbar-nav' />
+        <Navbar.Collapse id='responsive-navbar-nav'>
+          <Nav className="me-auto">
+            <Nav.Link href="#" as="span">
+              <Link to='/' style={style}>Home</Link>
+            </Nav.Link>
+            <Nav.Link href="#" as="span">
+              <Link to='/notes' style={style}>Notes</Link>
+            </Nav.Link>
+            <Nav.Link href="#" as="span">
+              <Link to='/users' style={style}>Users</Link>
+            </Nav.Link>
+            <Nav.Link href="#" as="span">
+              {user
+                ? <em>{user} logged in</em>
+                : <Link to='/login' style={style}>Login</Link>
+              }
+            </Nav.Link>
+          </Nav>
+        </Navbar.Collapse>
+
+      </Navbar>
 
       <Routes>
         <Route path='/' element={<Home />} />
